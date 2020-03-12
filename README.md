@@ -1,10 +1,10 @@
-##Ros Sharp Branch for ARMLAB##
+## Ros Sharp Branch for ARMLAB ##
 
-*Contains Scripts for ros-side
+Contains Scripts for ros-side
 
-*Unity Project Depository: https://stanford.box.com/s/2mkgmcronl7mqfe6y62alokbv2pq3tft
+Unity Project Depository: https://stanford.box.com/s/2mkgmcronl7mqfe6y62alokbv2pq3tft
 
-*See https://github.com/armlabstanford/mixed_reality_setup for Arm Lab mixed reality set-up
+See https://github.com/armlabstanford/mixed_reality_setup for Arm Lab mixed reality set-up
 
 
 # [<img src="https://github.com/siemens/ros-sharp/wiki/img/Home_RosSharpLogo.png" width="480" alt ="ROS#"/>](https://github.com/siemens/ros-sharp) #
