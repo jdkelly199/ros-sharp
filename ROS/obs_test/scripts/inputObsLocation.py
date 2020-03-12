@@ -15,36 +15,63 @@
 import rospy
 import numpy
 
-from geometry_msgs.msg import Point
+from geometry_msgs.msg import Point, Pose, Quaternion
+from std_msgs.msg import String
 from Xlib import display
 from Xlib.ext import randr
+
+def getViconData():
+	return([0])
+
+def calculateTransform(ref, vic):
+	print(ref)
     
 def inputObsLocation():
 	# initialize node
-	rospy.init_node('obsLocation', anonymous = True)
+	rospy.init_node('calibrate', anonymous = True)
 
 	#### Setup obsLocation Publisher 
-   	obsLocationPublisher = rospy.Publisher("obs", Point, queue_size = 5)
 	rate = rospy.Rate(10) # 10hz
-	msg = Point()
-	
-	while not rospy.is_shutdown():
+
+	#Transform Poses
+	refTransforms = []
+	viconTransforms = []
+
+
+	nextRefPublisher = rospy.Publisher("/sendRef", String, queue_size = 5)
+	endRefPublisher = rospy.Publisher("/endRef", String, queue_size = 5)
+
+	while not rospy.is_shutdown():	
+		print("waiting")
+		rospy.wait_for_message("/startCal", String)
+		print("started calibration")
+		msg = String("next")
+		print("on to next")	
+		nextRefPublisher.publish(msg)
+
+		while(len(refTransforms) < 10):
+			print("waiting for next")
+			refTransforms.append(rospy.wait_for_message("nextTransform", Pose))
+			viconTransforms.append(getViconData())
+			print("recieved")
+		endRefPublisher.publish(msg)
+		calculateTransform(refTransforms, viconTransforms)
+
 		#### Initialize point msg every loop
-		msg.x = 0.0
-		msg.y = 0.0
-		msg.z = 0.0
+		#msg.x = 0.0
+		#msg.y = 0.0
+		#msg.z = 0.0
 		
 		#### Prompt User for Obs Location
-		msg.x = float(input("Please Enter The X Position of the Obstacle: "))
-		msg.y = float(input("Please Enter The Y Position of the Obstacle: "))
-		msg.z = float(input("Please Enter The Z Position of the Obstacle: "))
+		#msg.x = float(input("Please Enter The X Position of the Obstacle: "))
+		#msg.y = float(input("Please Enter The Y Position of the Obstacle: "))
+		#msg.z = float(input("Please Enter The Z Position of the Obstacle: "))
 		
 
 
 		#### Publish msg
 		#rospy.loginfo([pos_x, pos_y])
-		rospy.loginfo(msg)
-		obsLocationPublisher.publish(msg)
+		#obsLocationPublisher.publish(msg)
 		#rate.sleep()
 
 
